@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>YouTube Channel Marketplace</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f6fa;
+    color:#111827;
+}
+
+header{
+    background:#ffffff;
+    padding:18px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #ddd;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#ff0033;
+}
+
+nav a{
+    text-decoration:none;
+    color:#333;
+    margin-left:25px;
+    font-weight:bold;
+}
+
+.hero{
+    background:linear-gradient(135deg,#172554,#2563eb);
+    color:white;
+    text-align:center;
+    padding:60px 20px;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    font-size:18px;
+}
+
+.container{
+    max-width:1150px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.container h2{
+    margin-bottom:25px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+    border:1px solid #e5e7eb;
+}
+
+.card img{
+    width:100%;
+    height:330px;
+    object-fit:cover;
+    object-position:top;
+    background:#111;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card h3{
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.badge{
+    display:inline-block;
+    background:#e8fff0;
+    color:#087f3e;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+    margin:15px 0;
+}
+
+.stat{
+    background:#f5f7fa;
+    padding:10px 5px;
+    text-align:center;
+    border-radius:10px;
+}
+
+.stat strong{
+    display:block;
+    font-size:15px;
+}
+
+.stat small{
+    color:#666;
+    font-size:10px;
+}
+
+.price{
+    font-size:26px;
+    font-weight:bold;
+    margin:15px 0;
+}
+
+.buy-btn{
+    width:100%;
+    padding:14px;
+    background:#16a34a;
+    color:white;
+    border:0;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.buy-btn:hover{
+    background:#15803d;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:480px;
+    max-height:92vh;
+    overflow:auto;
+    border-radius:22px;
+    padding:25px;
+    position:relative;
+}
+
+.close{
+    position:absolute;
+    right:15px;
+    top:12px;
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.modal-box h2{
+    margin-bottom:8px;
+}
+
+.selected-price{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.qr-container{
+    text-align:center;
+    margin:15px 0;
+}
+
+.qr-container img{
+    width:220px;
+    height:220px;
+    object-fit:contain;
+    border:2px dashed #aaa;
+    border-radius:15px;
+    padding:8px;
+}
+
+.qr-placeholder{
+    width:220px;
+    height:220px;
+    margin:auto;
+    border:2px dashed #999;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#777;
+    background:#f8fafc;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin:15px 0 7px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.submit-btn{
+    width:100%;
+    margin-top:18px;
+    padding:14px;
+    border:0;
+    border-radius:11px;
+    background:#2563eb;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.success{
+    display:none;
+    margin-top:15px;
+    padding:15px;
+    background:#ecfdf5;
+    color:#047857;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.notice{
+    margin-top:15px;
+    font-size:12px;
+    color:#64748b;
+    line-height:1.5;
+}
+
+footer{
+    text-align:center;
+    padding:35px;
+    color:#64748b;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .hero h1{
+        font-size:31px;
+    }
+
+    nav{
+        display:none;
+    }
+
+    .card img{
+        height:280px;
+    }
+}
+	video {
+	     width:100%;
+		 border: 1px solid green;
+		 border-radius: 10px
+		 margin-top: 20px;
+		 }
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Channel<span>Hub</span>
+    </div>
+
+    <nav>
+        <a href="#channels">Channels</a>
+        <a href="#sell">Sell</a>
+    </nav>
+
+</header>
+
+
+<section class="hero">
+
+    <h1>YouTube Channel Marketplace</h1>
+
+    <p>
+        Buy and sell YouTube channels
+    </p>
+
+</section>
+
+
+<main class="container" id="channels">
+
+
+<h2>YouTube Channels</h2>
+
+<div class="grid">
+
+	 <h1> Watch this video, <br>To understand how to order.......</h1>
+	 <video controls src="" autoplay>
+	 </video>
+<hr>
+
+<!-- CHANNEL 1 -->
+
+<div class="card">
+
+<img src="C:\Users\L\SCIENCE\youtube\IMG_20260907_065117.jpg" alt="Shorya sahu">
+
+<div class="card-content">
+
+<h3>Shorya sahu</h3>
+
+<span class="badge">
+Non-Monetized
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>76,061</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>21.4L</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>3.4K</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+799rs.
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('Shorya sahu','799')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+<!-- CHANNEL 2 -->
+
+<div class="card">
+
+<img src="C:\Users\L\SCIENCE\youtube\Capture.PNG" alt="Star Fact India">
+
+<div class="card-content">
+
+<h3>Star Fact India</h3>
+
+<span class="badge">
+Non-Monetized
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>239,336</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>10</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>0.1</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+999rs.
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('Star Fact India','999')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+<!-- CHANNEL 3 -->
+
+<div class="card">
+
+<img src="C:\Users\L\SCIENCE\youtube\Capture1.PNG" alt="GT Troll">
+
+<div class="card-content">
+
+<h3>GT Troll</h3>
+
+<span class="badge">
+Monetized
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>90,914</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>13.0M</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>53.2K</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+850rs.
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('GT Troll','850')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+<!-- CHANNEL 4 -->
+
+<div class="card">
+
+<img src="C:\Users\L\SCIENCE\youtube\Screenshot_2026-09-06-09-05-38-36_e83481424e08a93e8b34a9fb2e4f6b36 - Copy.png" alt="Rexy facts 1m">
+
+<div class="card-content">
+
+<h3>Rexy facts 1m</h3>
+
+<span class="badge">
+Non-Monetized
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>2,605</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>9.6K</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>33.2</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+200rs.
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('Rexy facts 1m','200')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+<!-- CHANNEL 5 -->
+
+<div class="card">
+
+<img src="C:\Users\L\SCIENCE\youtube\2.PNG" alt="ToonTales Hindi">
+
+<div class="card-content">
+
+<h3>ToonTales Hindi</h3>
+
+<span class="badge">
+Non-Monetized
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>89,640</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>951</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>2.1</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+810rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('ToonTales Hindi','810')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+<!-- CHANNEL 6 -->
+
+<div class="card">
+
+<div class="card-content">
+
+<h3>Vfx faijul 2</h3>
+
+<span class="badge">
+Sold out
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>86088</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>62.2M</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>129.9k</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+850rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('Vfx faijul 2','850')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+
+<!-- CHANNEL 7 -->
+
+<div class="card">
+
+<div class="card-content">
+
+<h3>Sparkcrezy</h3>
+
+<span class="badge">
+Sold out
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>6792</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>13M</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>53.2k</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+499rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('Sparkcrezy','499')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+<!-- CHANNEL 8 -->
+
+<div class="card">
+
+<div class="card-content">
+
+<h3>Motu Patlu</h3>
+
+<span class="badge">
+Sold out
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>100k</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>24M</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>1.5M</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+1299rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('Motu patlu','1299')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+<p> Instagram images will not shown, If you get images contact @nimitt43</p>
+
+<!-- CHANNEL 9 -->
+
+<div class="card">
+
+<div class="card-content">
+
+<h3>Smitxyz</h3>
+
+<span class="badge">
+Sold out
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>23440</strong>
+<small>Subscribers</small>
+</div>
+
+<div class="stat">
+<strong>128k</strong>
+<small>Views</small>
+</div>
+
+<div class="stat">
+<strong>26.8k</strong>
+<small>Watch Hours</small>
+</div>
+
+</div>
+
+<div class="price">
+399rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('smitxyz','399')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+<!-- CHANNEL 10 -->
+
+<div class="card">
+
+<div class="card-content">
+
+<h3>Khan studio.ai</h3>
+
+<span class="badge">
+Blue tick
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>25.9k</strong>
+<small>Followers</small>
+</div>
+
+<div class="stat">
+<strong>136</strong>
+<small>Post</small>
+</div>
+
+<div class="stat">
+<strong>2</strong>
+<small>Following</small>
+</div>
+
+</div>
+
+<div class="price">
+399rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('khan studio.ai','399')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+<!-- CHANNEL 11 -->
+
+<div class="card">
+
+<div class="card-content">
+
+<h3>geeta_geetasahu</h3>
+
+<span class="badge">
+blue tick not
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>525</strong>
+<small>followers</small>
+</div>
+
+<div class="stat">
+<strong>451</strong>
+<small>posts</small>
+</div>
+
+<div class="stat">
+<strong>365</strong>
+<small>following</small>
+</div>
+
+</div>
+
+<div class="price">
+89rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('geeta_geetasahu','89')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+<!-- CHANNEL 12 -->
+
+<div class="card">
+
+<div class="card-content">
+
+<h3>rudranshipanday5300</h3>
+
+<span class="badge">
+blue tick not
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>1202</strong>
+<small>Followers</small>
+</div>
+
+<div class="stat">
+<strong>15</strong>
+<small>post</small>
+</div>
+
+<div class="stat">
+<strong>29</strong>
+<small>following</small>
+</div>
+
+</div>
+
+<div class="price">
+120rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('rudranshipanday5300','120')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+<!-- CHANNEL 13 -->
+
+<div class="card">
+
+<div class="card-content">
+
+<h3>Cutetinkutv</h3>
+
+<span class="badge">
+Blue tick
+</span>
+
+<div class="stats">
+
+<div class="stat">
+<strong>124k</strong>
+<small>Followers</small>
+</div>
+
+<div class="stat">
+<strong>283</strong>
+<small>posts</small>
+</div>
+
+<div class="stat">
+<strong>2</strong>
+<small>Following</small>
+</div>
+
+</div>
+
+<div class="price">
+550rs
+</div>
+
+<button class="buy-btn"
+onclick="openBuy('Cutetinkutv','550')">
+Buy Channel
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+
+</main>
+
+
+<!-- SELL -->
+
+<section class="container" id="sell">
+
+<div style="
+background:white;
+padding:25px;
+border-radius:18px;
+box-shadow:0 5px 20px rgba(0,0,0,.06);
+">
+
+<h2>Sell Your Channel</h2>
+
+<p>
+Create a listing for your YouTube channel.
+</p>
+
+<br>
+
+<button class="buy-btn"
+onclick="alert('Admin only listed channel. For listing contact on telegram @nimitt43')">
+Create Listing
+</button>
+
+</div>
+
+</section>
+
+
+<!-- BUY MODAL -->
+
+<div class="modal" id="buyModal">
+
+<div class="modal-box">
+
+<button class="close"
+onclick="closeBuy()">
+×
+</button>
+
+<h2 id="channelName">
+Buy Channel
+</h2>
+
+<div class="selected-price"
+id="channelPrice">
+₹0
+</div>
+
+
+<!-- QR -->
+
+<div class="qr-container">
+
+
+<div class="qr-placeholder">
+
+<br>
+<img src="C:\Users\L\Pictures\upi-qr-8081344114.png" alt="UPI QR">
+
+</div>
+
+</div>
+
+
+<label>
+Your Email ID
+</label>
+
+<input
+id="buyerEmail"
+type="email"
+placeholder="your@email.com"
+>
+
+<label>
+Your Phone number
+</label>
+
+<input
+id="buyer phone number"
+type="phone number"
+placeholder="0000000000"
+>
+
+<label>
+UPI Reference / Transaction ID
+</label>
+
+<input
+id="upiReference"
+type="text"
+placeholder="Enter UPI reference number"
+>
+
+
+<button
+class="submit-btn"
+onclick="submitPayment()">
+
+Submit Payment Reference
+
+</button>
+
+
+<div
+class="success"
+id="successMessage">
+.
+✓ Payment reference submitted successfully.<br>
+The channel information will be send to your email.....
+
+</div>
+
+
+<div class="notice">
+
+If you faced any problems, contact on @nimitt43 on telegram
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+
+YouTube Channel Marketplace
+
+</footer>
+
+
+<script>
+
+function openBuy(name, price){
+
+    document.getElementById("channelName")
+    .innerText = "Buy " + name;
+
+    document.getElementById("channelPrice")
+    .innerText = price;
+
+    document.getElementById("buyerEmail")
+    .value = "";
+
+    document.getElementById("upiReference")
+    .value = "";
+
+    document.getElementById("successMessage")
+    .style.display = "none";
+
+    document.getElementById("buyModal")
+    .classList.add("active");
+}
+
+
+function closeBuy(){
+
+    document.getElementById("buyModal")
+    .classList.remove("active");
+
+}
+
+
+function submitPayment(){
+
+    let email =
+        document.getElementById("buyerEmail")
+        .value.trim();
+
+    let reference =
+        document.getElementById("upiReference")
+        .value.trim();
+
+
+    if(email === "" || !email.includes("@")){
+
+        alert("Please enter a valid email ID.");
+
+        return;
+    }
+
+
+    if(reference.length < 4){
+
+        alert("Please enter your UPI reference number.");
+
+        return;
+    }
+
+
+    document.getElementById("successMessage")
+    .style.display = "block";
+
+}
+
+
+window.onclick = function(event){
+
+    let modal =
+        document.getElementById("buyModal");
+
+    if(event.target === modal){
+
+        closeBuy();
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
